@@ -81,7 +81,7 @@ async function run() {
       const newreviews = await usersReview.insertOne(reviews);
       res.send(newreviews);
     });
-    app.get("/userReviews", async (req, res) => {
+    app.get("", async (req, res) => {
       const query = {};
       const result = await usersReview.find(query).toArray();
       res.send(result);
