@@ -77,7 +77,16 @@ async function run() {
     });
 
     //// User Reviews
-
+    app.post("/userReviews", async (req, res) => {
+      const reviews = req.body;
+      const newreviews = await usersReview.insertOne(reviews);
+      res.send(newreviews);
+    });
+    app.get("/userReviews", async (req, res) => {
+      const query = {};
+      const result = await usersReview.find(query).toArray();
+      res.send(result);
+    });
     // User Profile
     app.put("/userProfile", async (req, res) => {
       const userProfile = req.body;
