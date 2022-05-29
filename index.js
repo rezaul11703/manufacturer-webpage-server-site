@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 const app = express();
 const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion } = require("mongodb");
@@ -81,7 +82,7 @@ async function run() {
       const newreviews = await usersReview.insertOne(reviews);
       res.send(newreviews);
     });
-    app.get("", async (req, res) => {
+    app.get("/userReviews", async (req, res) => {
       const query = {};
       const result = await usersReview.find(query).toArray();
       res.send(result);
@@ -113,6 +114,7 @@ async function run() {
     /// Make Admin Sector
     app.put("/user/admin/:email", verifyjwt, async (req, res) => {
       const email = req.params.email;
+      console.log(email);
       const requester = req.decoded.email;
       const requesterAccount = await usersCollection.findOne({
         email: requester,
@@ -149,7 +151,7 @@ async function run() {
       );
       const token = jwt.sign(
         { email: email },
-        process.env.ACCESS_TOKEN_SECURIY,
+        process.env.ACCESS_TOKEN_SECURITY,
         { expiresIn: "3h" }
       );
       res.send({ result, token });
