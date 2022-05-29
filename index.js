@@ -136,31 +136,6 @@ async function run() {
       const isAdmin = user.role === "admin";
       res.send({ admin: isAdmin });
     });
-    app.put("/user/:email", async (req, res) => {
-      const email = req.params.email;
-      const user = req.body;
-      const filter = { email: email };
-      const options = { upsert: true };
-      const updateDoc = {
-        $set: user,
-      };
-      const result = await usersCollection.updateOne(
-        filter,
-        updateDoc,
-        options
-      );
-      const token = jwt.sign(
-        { email: email },
-        process.env.ACCESS_TOKEN_SECURITY,
-        { expiresIn: "3h" }
-      );
-      res.send({ result, token });
-    });
-    app.get("/allusers", async (req, res) => {
-      const query = {};
-      const allUsers = await usersCollection.find(query).toArray();
-      res.send(allUsers);
-    });
   } finally {
   }
 }
