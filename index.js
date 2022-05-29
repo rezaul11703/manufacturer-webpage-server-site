@@ -130,7 +130,12 @@ async function run() {
         res.status(403).send({ message: "Forbidden" });
       }
     });
-
+    app.get("/admin/:email", async (req, res) => {
+      const email = req.params.email;
+      const user = await usersCollection.findOne({ email: email });
+      const isAdmin = user.role === "admin";
+      res.send({ admin: isAdmin });
+    });
     app.put("/user/:email", async (req, res) => {
       const email = req.params.email;
       const user = req.body;
