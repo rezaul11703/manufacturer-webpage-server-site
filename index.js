@@ -112,7 +112,9 @@ async function run() {
     });
 
     /// Make Admin Sector
-   
+    app.put("/user/admin/:email", verifyjwt, async (req, res) => {
+      const email = req.params.email;
+      console.log(email);
       const requester = req.decoded.email;
       const requesterAccount = await usersCollection.findOne({
         email: requester,
